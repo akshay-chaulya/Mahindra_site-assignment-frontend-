@@ -133,13 +133,15 @@ const SliderRow = ({ direction, imageSet }) => {
 
 const Slider = () => {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-12 sm:py-16 xl:py-28">
-      <Title
+    <section className="max-w-7xl mx-auto py-12 sm:py-16">
+      <div className="px-4 sm:px-16 lg:px-28">
+        <Title
         zerothText="A"
         firstText="Glimpse"
         secondText="of Life at Mahindra Blossom"
         thirdText="View images of homes, amenities, and the surrounding environment."
       />
+      </div>
 
       <div className="mt-12 space-y-8">
         <SliderRow direction={1} imageSet={images[0]} />

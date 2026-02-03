@@ -2,7 +2,6 @@ import logo1 from "./logo_img1.png";
 import logo2 from "./logo_img2.png";
 import callIcon from "./call_icon.png";
 import apartmentImg from "./apartment_img1.jpg";
-import heroFrame from "./hero_frame.png";
 import heroGif from "./hero_gif.gif";
 import heroBg from "./hero_bg_img.png";
 import flowerLogo from "./flower_logo.png";
@@ -28,13 +27,15 @@ import jaggingTrackImg from "./road_img1.png";
 import cardBg2 from "./card_bg_img2.png";
 import cardBg3 from "./card_bg_img3.png";
 import bedRoomImg1 from "./bed_room_img1.jpg";
+import playIcon from "./play_icon.png"
+import mapImg from "./map_img.png"
+import bathroomImg from "./bathroom_img.png"
 
 export {
   logo1,
   logo2,
   callIcon,
   apartmentImg,
-  heroFrame,
   heroGif,
   heroBg,
   flowerLogo,
@@ -60,4 +61,7 @@ export {
   cardBg2,
   cardBg3,
   bedRoomImg1,
+  playIcon,
+  mapImg,
+  bathroomImg,
 };

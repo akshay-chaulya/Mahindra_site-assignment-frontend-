@@ -40,7 +40,7 @@ const Testimonial2 = () => {
   return (
     <section
       className="bg-[#ED3237] text-white max-w-7xl mx-auto
-        px-4 py-12 sm:px-12 sm:py-16 xl:p-28"
+        px-4 py-12 sm:px-12 sm:py-16 xl:px-28"
     >
       <Title
         secondText="Thoughtfully Designed Floor Plans"
@@ -49,9 +49,8 @@ const Testimonial2 = () => {
 
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-10 text-[#4B4D4C]">
         {plans.map((plan, idx) => (
-          <div className="relative">
+          <div key={idx} className="relative">
             <div
-              key={idx}
               className="bg-white rounded-2xl bg-center bg-cover min-h-64 relative overflow-hidden"
               style={{ backgroundImage: `url(${plan.img})` }}
             >
@@ -60,7 +59,15 @@ const Testimonial2 = () => {
 
               {/* middle  */}
               <div className="absolute h-full w-full flex items-center justify-center">
-                {plan.soldOut ? <img src={soldOutImg} className="h-40 bg-cover bg-center -rotate-15" alt="" /> : <Btn1 text="View Plan" />}
+                {plan.soldOut ? (
+                  <img
+                    src={soldOutImg}
+                    className="h-40 bg-cover bg-center -rotate-15"
+                    alt=""
+                  />
+                ) : (
+                  <Btn1 text="View Plan" />
+                )}
               </div>
             </div>
             {/* flat name  */}
