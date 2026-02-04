@@ -30,6 +30,7 @@ import bedRoomImg1 from "./bed_room_img1.jpg";
 import playIcon from "./play_icon.png"
 import mapImg from "./map_img.png"
 import bathroomImg from "./bathroom_img.png"
+import formBgImg from "./form_bg.png"
 
 export {
   logo1,
@@ -64,4 +65,5 @@ export {
   playIcon,
   mapImg,
   bathroomImg,
+  formBgImg,
 };

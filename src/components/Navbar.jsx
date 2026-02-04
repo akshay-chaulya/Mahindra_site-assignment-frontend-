@@ -30,7 +30,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 md:px-10 py-4 transition-all duration-500 ${
+      className={`fixed top-0 left-0 w-full z-49 flex items-center justify-between px-6 md:px-10 py-4 transition-all duration-500 ${
         scrolled ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >

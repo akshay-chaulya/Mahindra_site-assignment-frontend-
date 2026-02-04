@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import {
   apartmentImg,
   balconyImg,
@@ -50,81 +51,218 @@ const images = [
   ],
 ];
 
-/* ---------------- HOOK ---------------- */
+/* ---------------- COORDINATED SCROLL CONTROLLER ---------------- */
 
-const useBidirectionalScroll = ({
-  ref,
-  initialDirection = 1,
-  baseSpeed = 0.4,
-  maxSpeed = 2,
-  speedUpAfter = 5000,
-}) => {
+const useCoordinatedScroll = (tracksRefs) => {
+  const [phase, setPhase] = useState("forward"); // "forward" or "backward"
+  const timelineRef = useRef(null);
+
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    if (!tracksRefs.current || tracksRefs.current.length === 0) return;
 
-    let direction = initialDirection;
-    let speed = baseSpeed;
-    let startTime = performance.now();
-    let rafId;
+    const tracks = tracksRefs.current.filter(Boolean);
+    if (tracks.length === 0) return;
 
-    const animate = (time) => {
-      if (time - startTime > speedUpAfter && speed < maxSpeed) {
-        speed += 0.01;
+    // Separate tracks: rows 1 & 3 go together, row 2 goes opposite
+    const row1and3 = [tracks[0], tracks[2]]; // First and Last rows
+    const row2 = tracks[1]; // Middle row
+
+    // Get the width to scroll
+    const trackWidth = tracks[0].scrollWidth / 2;
+
+    // Kill any existing timeline
+    if (timelineRef.current) {
+      timelineRef.current.kill();
+    }
+
+    // Create new timeline
+    const tl = gsap.timeline({
+      onComplete: () => {
+        // Switch phase and it will trigger useEffect again
+        setPhase(prev => prev === "forward" ? "backward" : "forward");
       }
+    });
 
-      el.scrollLeft += speed * direction;
+    timelineRef.current = tl;
 
-      const maxScroll = el.scrollWidth - el.clientWidth;
+    if (phase === "forward") {
+      
+      // Reset positions for FORWARD
+      gsap.set(row1and3, { x: 0 });
+      gsap.set(row2, { x: -trackWidth });
 
-      if (el.scrollLeft <= 0) {
-        direction = 1;
-        speed = baseSpeed;
-        startTime = time;
+      // Phase 1: Slow scroll (8 seconds)
+      tl.to(row1and3, {
+        x: -trackWidth * 0.25,
+        duration: 8,
+        ease: "power1.inOut",
+      }, 0)
+      .to(row2, {
+        x: -trackWidth * 0.75,
+        duration: 8,
+        ease: "power1.inOut",
+      }, 0);
+
+      // Phase 2: Pause for 2 seconds
+      tl.to(row1and3, {
+        x: -trackWidth * 0.25,
+        duration: 2,
+      })
+      .to(row2, {
+        x: -trackWidth * 0.75,
+        duration: 2,
+      }, "<");
+
+      // Phase 3: Fast scroll (5 seconds)
+      tl.to(row1and3, {
+        x: -trackWidth * 0.85,
+        duration: 5,
+        ease: "power2.in",
+      })
+      .to(row2, {
+        x: -trackWidth * 0.15,
+        duration: 5,
+        ease: "power2.in",
+      }, "<");
+
+      // Phase 4: Slow down (2 seconds)
+      tl.to(row1and3, {
+        x: -trackWidth * 0.95,
+        duration: 2,
+        ease: "power2.out",
+      })
+      .to(row2, {
+        x: -trackWidth * 0.05,
+        duration: 2,
+        ease: "power2.out",
+      }, "<");
+
+      // Phase 5: Pause (2 seconds)
+      tl.to(row1and3, {
+        x: -trackWidth * 0.95,
+        duration: 2,
+      })
+      .to(row2, {
+        x: -trackWidth * 0.05,
+        duration: 2,
+      }, "<");
+
+      // Phase 6: Continue to end (1 second)
+      tl.to(row1and3, {
+        x: -trackWidth,
+        duration: 1,
+        ease: "power1.out",
+      })
+      .to(row2, {
+        x: 0,
+        duration: 1,
+        ease: "power1.out",
+      }, "<");
+
+    } else {
+      console.log("Starting BACKWARD animation");
+      
+      // Reset positions for BACKWARD
+      gsap.set(row1and3, { x: -trackWidth });
+      gsap.set(row2, { x: 0 });
+
+      // Phase 1: Slow scroll back (8 seconds)
+      tl.to(row1and3, {
+        x: -trackWidth * 0.75,
+        duration: 8,
+        ease: "power1.inOut",
+      }, 0)
+      .to(row2, {
+        x: -trackWidth * 0.25,
+        duration: 8,
+        ease: "power1.inOut",
+      }, 0);
+
+      // Phase 2: Pause for 2 seconds
+      tl.to(row1and3, {
+        x: -trackWidth * 0.75,
+        duration: 1,
+      })
+      .to(row2, {
+        x: -trackWidth * 0.25,
+        duration: 2,
+      }, "<");
+
+      // Phase 3: Fast scroll back (5 seconds)
+      tl.to(row1and3, {
+        x: -trackWidth * 0.15,
+        duration: 5,
+        ease: "power2.in",
+      })
+      .to(row2, {
+        x: -trackWidth * 0.85,
+        duration: 5,
+        ease: "power2.in",
+      }, "<");
+
+      // Phase 4: Slow down (2 seconds)
+      tl.to(row1and3, {
+        x: -trackWidth * 0.05,
+        duration: 2,
+        ease: "power2.out",
+      })
+      .to(row2, {
+        x: -trackWidth * 0.95,
+        duration: 2,
+        ease: "power2.out",
+      }, "<");
+
+      // Phase 5: Pause (2 seconds)
+      tl.to(row1and3, {
+        x: -trackWidth * 0.05,
+        duration: 2,
+      })
+      .to(row2, {
+        x: -trackWidth * 0.95,
+        duration: 2,
+      }, "<");
+
+      // Phase 6: Continue to start (1 second)
+      tl.to(row1and3, {
+        x: 0,
+        duration: 1,
+        ease: "power1.out",
+      })
+      .to(row2, {
+        x: -trackWidth,
+        duration: 1,
+        ease: "power1.out",
+      }, "<");
+    }
+
+    // Cleanup
+    return () => {
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+        timelineRef.current = null;
       }
-
-      if (el.scrollLeft >= maxScroll) {
-        direction = -1;
-        speed = baseSpeed;
-        startTime = time;
-      }
-
-      rafId = requestAnimationFrame(animate);
     };
+  }, [phase]); // Re-run when phase changes
 
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
+  return null;
 };
 
 /* ---------------- ROW ---------------- */
 
-const SliderRow = ({ direction, imageSet }) => {
-  const rowRef = useRef(null);
-
-  useBidirectionalScroll({
-    ref: rowRef,
-    initialDirection: direction,
-  });
-
+const SliderRow = ({ imageSet, trackRef }) => {
   return (
-    <div
-      ref={rowRef}
-      className="
-        flex gap-6
-        overflow-x-scroll overflow-y-hidden
-        scrollbar-hide
-        py-2
-      "
-    >
-      {imageSet.map((src, index) => (
-        <img
-          key={index}
-          src={src}
-          alt=""
-          className="h-44 w-72 shrink-0 rounded-2xl object-cover"
-        />
-      ))}
+    <div className="overflow-hidden py-2">
+      <div ref={trackRef} className="flex gap-6 w-max will-change-transform">
+        {/* Duplicate images for seamless infinite loop */}
+        {[...imageSet, ...imageSet].map((src, index) => (
+          <img
+            key={index}
+            src={src}
+            alt=""
+            className="h-44 w-72 shrink-0 rounded-2xl object-cover"
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -132,21 +270,35 @@ const SliderRow = ({ direction, imageSet }) => {
 /* ---------------- MAIN ---------------- */
 
 const Slider = () => {
+  const tracksRefs = useRef([]);
+
+  // Use the coordinated scroll hook
+  useCoordinatedScroll(tracksRefs);
+
   return (
     <section className="max-w-7xl mx-auto py-12 sm:py-16">
       <div className="px-4 sm:px-16 lg:px-28">
         <Title
-        zerothText="A"
-        firstText="Glimpse"
-        secondText="of Life at Mahindra Blossom"
-        thirdText="View images of homes, amenities, and the surrounding environment."
-      />
+          zerothText="A"
+          firstText="Glimpse"
+          secondText="of Life at Mahindra Blossom"
+          thirdText="View images of homes, amenities, and the surrounding environment."
+        />
       </div>
 
       <div className="mt-12 space-y-8">
-        <SliderRow direction={1} imageSet={images[0]} />
-        <SliderRow direction={-1} imageSet={images[1]} />
-        <SliderRow direction={1} imageSet={images[2]} />
+        <SliderRow
+          imageSet={images[0]}
+          trackRef={(el) => (tracksRefs.current[0] = el)}
+        />
+        <SliderRow
+          imageSet={images[1]}
+          trackRef={(el) => (tracksRefs.current[1] = el)}
+        />
+        <SliderRow
+          imageSet={images[2]}
+          trackRef={(el) => (tracksRefs.current[2] = el)}
+        />
       </div>
     </section>
   );
