@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { apartmentImg, playIcon } from "../assets/assets";
 
 const Footer = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef(null);
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+
+    setTimeout(() => {
+      videoRef.current?.play();
+    }, 50);
+  };
+
   return (
     <footer className="w-full pt-50">
       {/* Footer content */}
@@ -14,12 +25,26 @@ const Footer = () => {
           {/* Gradient overlay */}
           <div className="bg-linear-to-t from-black/80 via-black/20 to-black/40 w-full h-full absolute" />
 
+          {/* VIDEO */}
+          {isPlaying && (
+            <video
+              ref={videoRef}
+              src="/your-video.mp4" // 👈 replace with your video path
+              className="absolute inset-0 w-full h-full object-cover z-20"
+              controls
+              onPause={() => setIsPlaying(false)}
+            />
+          )}
+
           {/* Play icon */}
-          <img
-            src={playIcon}
-            className="w-22 h-22 invert absolute top-1/2 left-1/2 -translate-1/2 z-1"
-            alt="Play"
-          />
+          {!isPlaying && (
+            <img
+              onClick={handlePlay}
+              src={playIcon}
+              className="w-22 h-22 invert absolute top-1/2 left-1/2 -translate-1/2 z-1"
+              alt="Play"
+            />
+          )}
 
           <h1 className="inline-flex mb-4 text-xl sm:text-3xl z-10 text-center">
             Take The Virtual Tour

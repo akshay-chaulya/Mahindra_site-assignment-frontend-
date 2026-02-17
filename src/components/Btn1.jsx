@@ -1,13 +1,17 @@
+import { useDialogContext } from "../context/ContextProvider";
+
 const Btn1 = ({text}) => {
+  const { openDialog } = useDialogContext();
+
   return (
     <button
+      onClick={openDialog}
       className="
       cursor-pointer
-      px-6 sm:px-10 md:px-16
+      px-6 lg:px-16
       py-1.5 sm:py-2 md:py-2.5
       border border-gray-700
       text-gray-700
-      text-[10px] sm:text-xs md:text-base
       font-semibold
       rounded-full
       hover:bg-gray-700 hover:text-white

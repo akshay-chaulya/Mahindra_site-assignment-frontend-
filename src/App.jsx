@@ -10,7 +10,6 @@ import Slider from "./components/Slider";
 import Specification from "./components/Specification";
 import Testimonial1 from "./components/Testimonial1";
 import Testimonial2 from "./components/Testimonial2";
-import { ContextProvider } from "./context/ContextProvider";
 
 const App = () => {
   return (
@@ -25,10 +24,8 @@ const App = () => {
       <Specification />
       <Location />
       <Footer />
-      <ContextProvider>
-        <BookSiteVisit />
-        <BottomActionBar />
-      </ContextProvider>
+      <BookSiteVisit />
+      <BottomActionBar />
     </div>
   );
 };

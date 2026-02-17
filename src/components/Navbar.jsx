@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { callIcon, logo1, logo2, timerIcon } from "../assets/assets";
+import { useDialogContext } from "../context/ContextProvider";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileView, setMobileView] = useState(false);
+  const { openDialog } = useDialogContext();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,17 +45,19 @@ const Navbar = () => {
 
       {/* Call / CTA Button */}
       <a
-        href="tel:+919901717339"
-        className="bg-[#FF3B3B] hover:bg-[#E62E2E] text-white flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
+        onClick={openDialog}
+        className="sm:hidden bg-[#FF3B3B] hover:bg-[#E62E2E] text-white flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
       >
-        <img
-          src={mobileView ? timerIcon : callIcon}
-          className="h-4 w-4"
-          alt="Call"
-        />
-        <span className="text-xs md:text-sm font-medium">
-          {mobileView ? "Book a Visit" : "+91 9901717339"}
-        </span>
+        <img src={timerIcon} className="h-4 w-4" alt="Call" />
+        <span className="text-xs md:text-sm font-medium">Book a Visit</span>
+      </a>
+
+      <a
+        href="tel:+919901717339"
+        className="hidden sm:flex bg-[#FF3B3B] hover:bg-[#E62E2E] text-white  items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
+      >
+        <img src={callIcon} className="h-4 w-4" alt="Call" />
+        <span className="text-xs md:text-sm font-medium">+91 9901717339</span>
       </a>
     </nav>
   );
