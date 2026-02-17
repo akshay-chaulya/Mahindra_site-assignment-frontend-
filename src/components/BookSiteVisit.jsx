@@ -1,9 +1,9 @@
 import React from "react";
 import { formBgImg } from "../assets/assets";
-import { useDialog } from "../context/ContextProvider";
+import { useDialogContext } from "../context/ContextProvider";
 
 const BookSiteVisit = () => {
-    const { isOpen, closeDialog } = useDialog();
+    const { isOpen, closeDialog } = useDialogContext();
 
   if (!isOpen) return null;
 
@@ -19,15 +19,15 @@ const BookSiteVisit = () => {
         </button>
 
         {/* Left Content */}
-        <div className="relative p-6 sm:p-10 md:p-14 flex flex-col justify-start  text-[#4B4D4C]">
+        <div className="relative p-6 sm:p-10 md:p-14 flex flex-col justify-start  text-[#4B4D4C] pb-0">
           <div>
             <p className="tracking-widest font-medium text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4 text-center md:text-left">
               LET US SHOW YOU AROUND
             </p>
 
-            <h1 className="font-serif text-4xl sm:text-4xl lg:text-6xl leading-tight text-center md:text-left">
-              Book a guided <br />
-              site <span className="text-red-500">visit</span> at your <br />
+            <h1 className="font-serif text-2xl sm:text-4xl lg:text-6xl leading-tight text-center md:text-left">
+              Book a guided <br className="hidden sm:block" />
+              site <span className="text-red-500">visit</span> at your <br className="hidden sm:block" />
               convenience.
             </h1>
           </div>

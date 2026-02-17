@@ -1,7 +1,8 @@
-import React from "react";
-import Title from "./Title";
+import { useRef } from "react";
 import { cardBg2, cardBg3, soldOutImg } from "../assets/assets";
 import Btn1 from "./Btn1";
+import Title from "./Title";
+import { motion, useInView } from "framer-motion";
 
 const plans = [
   {
@@ -37,8 +38,22 @@ const plans = [
 ];
 
 const Testimonial2 = () => {
+  const sectionRef = useRef(null);
+
+  const isInView = useInView(sectionRef, {
+    once: true,
+    margin: "-100px", // triggers slightly after entering
+  });
+
   return (
-    <section
+    <motion.section
+      ref={sectionRef}
+      initial={{ opacity: 0, y: 120 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1], // smooth premium easing
+      }}
       className="bg-[#ED3237] text-white max-w-7xl mx-auto
         px-4 py-12 sm:px-12 sm:py-16 xl:px-28"
     >
@@ -47,7 +62,7 @@ const Testimonial2 = () => {
         thirdText="Smart layouts that maximize space, light, and everyday comfort."
       />
 
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-10 text-[#4B4D4C]">
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10 text-[#4B4D4C]">
         {plans.map((plan, idx) => (
           <div key={idx} className="relative">
             <div
@@ -66,18 +81,20 @@ const Testimonial2 = () => {
                     alt=""
                   />
                 ) : (
-                  <Btn1 text="View Plan" />
+                  <div className="text-xl">
+                    <Btn1 text="View Plan" />
+                  </div>
                 )}
               </div>
             </div>
             {/* flat name  */}
-            <button className="absolute left-1/2 -translate-x-1/2 -top-5 bg-white px-4 py-2 rounded-full shadow-xl font-semibold">
+            <button className="absolute left-1/2 -translate-x-1/2 -top-5 bg-white px-4 py-2 rounded-full shadow-xl font-semibold text-xl lg:text-lg">
               {plan.name}
             </button>
           </div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

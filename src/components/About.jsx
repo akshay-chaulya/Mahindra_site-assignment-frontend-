@@ -1,43 +1,64 @@
+import { useEffect, useRef } from "react";
 import { balconyImg, gardenImg2, treeImg } from "../assets/assets";
 import BulletPointFlower from "./BulletPointFlower";
 import Title from "./Title";
+import { useInView, motion, useAnimationControls } from "framer-motion";
+
+const features = [
+  {
+    title: "PRIME AND WELL CONNECTED LOCATION",
+    text: "Located at Hope Farm Junction, Whitefield, Mahindra Blossom places you minutes away from ITPL, tech parks, top schools, hospitals, malls, and the fully operational metro — ensuring effortless daily travel and high future value.",
+  },
+  {
+    title: "HOMES DESIGNED FOR SPACE, LIGHT & COMFORT",
+    text: "Choose from 2, 3 & 4 BHK premium apartments with smart, vastu compliant layouts, abundant natural light, and excellent ventilation — crafted for modern families, work-from-home needs, and everyday comfort.",
+  },
+  {
+    title: "WAKE UP TO GREEN, CALM LIVING",
+    text: "Surrounded by landscaped open spaces and greenery, Mahindra Blossom offers 4 acres of landscaped garden with bougainvillea canopies, aromatic and native plantations and butterfly park.",
+  },
+  {
+    title: "RESORT-STYLE AMENITIES AT YOUR DOORSTEP",
+    text: "Offering 97,000 sq. ft. of amenities and clubhouse spaces, including Bougainvillea canopies, half-Olympic size swimming pool, 25+ seater business center, cricket nets, 2 running tracks, 2 indoor badminton courts and much more.",
+  },
+  {
+    title: "SUSTAINABLE LIVING",
+    text: "Pre-certified IGBC Gold green homes with Net Zero Waste practices and energy-efficient design for lower consumption and sustainable living.",
+  },
+  {
+    title: "75+ YEARS OF MAHINDRA TRUST",
+    text: "Developed by Mahindra Lifespaces, part of the Mahindra Group, this project offers peace of mind through quality construction, transparency, & a proven track record of timely delivery.",
+  },
+];
 
 const About = () => {
-  const features = [
-    {
-      title: "PRIME AND WELL CONNECTED LOCATION",
-      text: "Located at Hope Farm Junction, Whitefield, Mahindra Blossom places you minutes away from ITPL, tech parks, top schools, hospitals, malls, and the fully operational metro — ensuring effortless daily travel and high future value.",
-    },
-    {
-      title: "HOMES DESIGNED FOR SPACE, LIGHT & COMFORT",
-      text: "Choose from 2, 3 & 4 BHK premium apartments with smart, vastu compliant layouts, abundant natural light, and excellent ventilation — crafted for modern families, work-from-home needs, and everyday comfort.",
-    },
-    {
-      title: "WAKE UP TO GREEN, CALM LIVING",
-      text: "Surrounded by landscaped open spaces and greenery, Mahindra Blossom offers 4 acres of landscaped garden with bougainvillea canopies, aromatic and native plantations and butterfly park.",
-    },
-    {
-      title: "RESORT-STYLE AMENITIES AT YOUR DOORSTEP",
-      text: "Offering 97,000 sq. ft. of amenities and clubhouse spaces, including Bougainvillea canopies, half-Olympic size swimming pool, 25+ seater business center, cricket nets, 2 running tracks, 2 indoor badminton courts and much more.",
-    },
-    {
-      title: "SUSTAINABLE LIVING",
-      text: "Pre-certified IGBC Gold green homes with Net Zero Waste practices and energy-efficient design for lower consumption and sustainable living.",
-    },
-    {
-      title: "75+ YEARS OF MAHINDRA TRUST",
-      text: "Developed by Mahindra Lifespaces, part of the Mahindra Group, this project offers peace of mind through quality construction, transparency, & a proven track record of timely delivery.",
-    },
-  ];
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const controls = useAnimationControls();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start({
+        right: "auto",
+        top: "auto",
+        left: "5rem",
+        bottom: "16.66%",
+        rotate: 0,
+        skewX: 0,
+        skewY: 0,
+      });
+    }
+  }, [isInView, controls]);
 
   return (
     <section
+      ref={ref}
       className="relative w-full bg-linear-to-br from-pink-50 via-pink-100/40 to-pink-50 overflow-hidden max-w-7xl mx-auto
-        px-4 py-12 sm:px-12 sm:py-16 xl:p-28"
+        px-4 sm:px-12 py-28 xl:p-28 "
     >
       {/* Background */}
       <div
-        className="absolute inset-0 opacity-30 pointer-events-none bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 opacity-10 pointer-events-none bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${treeImg})` }}
       />
 
@@ -115,7 +136,7 @@ const About = () => {
             >
               {/* Back Tilted Image (UNCHANGED STYLE) */}
               <div
-                className="absolute inset-0 rounded-2xl overflow-hidden shadow-lg"
+                className="absolute inset-0 rounded-2xl overflow-hidden shadow-lg block lg:hidden"
                 style={{
                   transform: "skewY(-2deg) skewX(4deg) rotate(-6deg)",
                   transformOrigin: "bottom left",
@@ -147,11 +168,11 @@ const About = () => {
           {/* Left Image */}
           <div className="hidden lg:block">
             <div className="rounded-3xl overflow-hidden shadow-2xl">
-              <img
+              {/* <img
                 src={balconyImg}
                 alt="Mahindra Blossom Interior"
                 className="w-full h-[600px] object-cover"
-              />
+              /> */}
             </div>
           </div>
 
@@ -175,6 +196,66 @@ const About = () => {
           </div>
         </div>
       </div>
+
+      {/* for animation  */}
+      {/* <div className="absolute right-28 top-25 ">
+        <img
+          style={{
+            transform: "skewY(-2deg) skewX(4deg) rotate(-5deg)",
+            transformOrigin: "bottom left",
+          }}
+          src={balconyImg}
+          className="h-125 w-82 object-cover rounded-2xl rotate"
+          alt=""
+        />
+      </div> */}
+
+      {/* <div className="absolute bottom-1/6 left-20 ">
+        <img
+          src={balconyImg}
+          className="h-150 w-82 object-cover rounded-2xl rotate"
+          alt=""
+        />
+      </div> */}
+
+      <motion.div
+        initial={{
+          position: "absolute",
+          right: "7rem",
+          top: "6.25rem",
+          left: "auto",
+          bottom: "auto",
+          rotate: -5,
+          skewX: 4,
+          skewY: -2,
+        }}
+        animate={controls}
+        transition={{
+          duration: 6,
+          // ease: [0.76, 0, 0.24, 1], // custom cubic-bezier for cinematic feel
+          ease: "easeInOut"
+        }}
+        style={{ position: "absolute" }}
+      >
+        <motion.img
+          initial={{ height: "500px" }}
+          animate={isInView ? { height: "600px" } : { height: "500px" }}
+          transition={{
+            duration: 6,
+            // ease: [0.76, 0, 0.24, 1],
+            ease: "easeInOut"
+          }}
+          style={{
+            width: "320px",
+            objectFit: "cover",
+            borderRadius: "1rem",
+            display: "block",
+          }}
+          src={balconyImg}
+          className="w-[320px] object-cover rounded-2xl"
+          alt=""
+        />
+      </motion.div>
     </section>
   );
 };

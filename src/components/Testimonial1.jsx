@@ -1,33 +1,47 @@
-import React from "react";
+import React, { useRef } from "react";
 import Title from "./Title";
 import { cardBg, soldOutImg } from "../assets/assets";
 import Btn1 from "./Btn1";
+import { motion, useInView } from "framer-motion";
+
+const cardData = [
+  {
+    flat: "2 BHK",
+    area: "1200-1400 sq.ft.",
+    price: 1.85,
+    soldOut: true,
+  },
+  {
+    flat: "3 BHK",
+    area: "1800-1850 sq.ft.",
+    price: 2.18,
+    soldOut: false,
+  },
+  {
+    flat: "4 BHK",
+    area: "2200-2350 sq.ft.",
+    price: 2.88,
+    soldOut: false,
+  },
+];
 
 const Testimonial1 = () => {
-  // Card data array
-  const cardData = [
-    {
-      flat: "2 BHK",
-      area: "1200-1400 sq.ft.",
-      price: 1.85,
-      soldOut: true,
-    },
-    {
-      flat: "3 BHK",
-      area: "1800-1850 sq.ft.",
-      price: 2.18,
-      soldOut: false,
-    },
-    {
-      flat: "4 BHK",
-      area: "2200-2350 sq.ft.",
-      price: 2.88,
-      soldOut: false,
-    },
-  ];
+  const sectionRef = useRef(null);
+
+  const isInView = useInView(sectionRef, {
+    once: true,
+    margin: "-100px", // triggers slightly after entering
+  });
 
   return (
-    <section
+    <motion.section
+      ref={sectionRef}
+      initial={{ opacity: 0, y: 120 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1], // smooth premium easing
+      }}
       className="bg-[#ED3237] text-white max-w-7xl mx-auto
         px-4 py-12 sm:px-12 sm:py-16 xl:p-28"
     >
@@ -36,8 +50,8 @@ const Testimonial1 = () => {
         thirdText="Explore apartment options and pricing details tailored to your needs"
       />
 
-      {/* Cards Container – ALWAYS 3 CARDS */}
-      <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 mt-10 text-[#4B4D4C]">
+      {/* Cards Container */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mt-10 text-[#4B4D4C]">
         {cardData.map((item, idx) => (
           <div
             key={idx}
@@ -48,10 +62,9 @@ const Testimonial1 = () => {
             <div className="absolute inset-0 bg-white/90" />
 
             {item.soldOut ? (
-              // SOLD OUT CARD
               <>
                 {/* Blurred background text */}
-                <div className="absolute inset-0 flex flex-col items-center justify-around py-10 text-3xl">
+                <div className="absolute inset-0 flex flex-col items-center justify-around py-10 text-2xl sm:text-3xl md:text-4xl">
                   <p>{item.area}</p>
                   <p>{item.area}</p>
                 </div>
@@ -60,10 +73,8 @@ const Testimonial1 = () => {
                 <div className="absolute text-transparent inset-0 backdrop-blur-sm bg-linear-to-b from-white via-transparent to-white via-4/5" />
 
                 {/* Main content */}
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-start gap-3 sm:gap-4 md:gap-6 pt-16">
-                  <p className="text-lg sm:text-2xl md:text-4xl font-bold">
-                    {item.flat}
-                  </p>
+                <div className="py-8 lg:py-16 absolute inset-0 z-10 flex flex-col items-center justify-start gap-3 sm:gap-4 md:gap-6">
+                  <p className="text-3xl lg:text-4xl font-bold">{item.flat}</p>
                   <img
                     src={soldOutImg}
                     alt="Sold Out"
@@ -72,22 +83,24 @@ const Testimonial1 = () => {
                 </div>
               </>
             ) : (
-              // AVAILABLE CARD
               <>
-                {/* Main content */}
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-start gap-2 sm:gap-3 md:gap-4 px-2 text-center pt-16">
-                  <p className="text-lg sm:text-2xl md:text-4xl font-bold uppercase">
+                {/* Available Card Content */}
+                <div className="py-8 lg:py-16 absolute inset-0 z-10 flex flex-col items-center justify-start gap-2 sm:gap-3 md:gap-4 px-2 text-center">
+                  <p className="text-2xl md:text-2xl lg:text-4xl font-bold uppercase">
                     {item.flat}
                   </p>
-                  <p className="text-xs sm:text-sm md:text-xl font-semibold">
+
+                  <p className="text-base md:text-lg lg:text-xl font-semibold">
                     {item.area}
                   </p>
-                  <p className="text-sm sm:text-lg md:text-2xl">
+
+                  <p className="text-lg md:text-xl lg:text-2xl">
                     <span className="font-bold">₹ {item.price}cr</span>{" "}
+                    <br className="lg:hidden block" />
                     <span className="italic">Onwards</span>
                   </p>
 
-                  <div className="mt-2 sm:mt-4 md:mt-8">
+                  <div className="mt-4 lg:mt-8">
                     <Btn1 text="Get Quote" />
                   </div>
                 </div>
@@ -96,7 +109,7 @@ const Testimonial1 = () => {
           </div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

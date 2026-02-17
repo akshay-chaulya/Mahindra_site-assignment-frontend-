@@ -15,10 +15,10 @@ export const ContextProvider = ({ children }) => {
   );
 };
 
-export const useDialog = () => {
+export const useDialogContext = () => {
   const context = useContext(Context);
   if (!context) {
-    throw new Error("useDialog must be used inside DialogProvider");
+    throw new Error("useDialogContext must be used inside DialogProvider");
   }
   return context;
 };
