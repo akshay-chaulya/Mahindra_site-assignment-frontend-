@@ -70,8 +70,5 @@ export {
   mapImg,
   bathroomImg,
   formBgImg,
-<<<<<<< HEAD
   footerVideo,
-=======
->>>>>>> feature-one
 };
