@@ -4,7 +4,6 @@ import { useDialogContext } from "../context/ContextProvider";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileView, setMobileView] = useState(false);
   const { openDialog } = useDialogContext();
 
   useEffect(() => {
@@ -13,20 +12,13 @@ const Navbar = () => {
       setScrolled(window.scrollY > heroHeight * 0.8);
     };
 
-    const handleResize = () => {
-      setMobileView(window.innerWidth < 768); // Tailwind md breakpoint
-    };
-
     // Initial checks
     handleScroll();
-    handleResize();
 
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

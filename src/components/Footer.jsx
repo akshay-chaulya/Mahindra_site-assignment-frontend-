@@ -1,9 +1,5 @@
 import React, { useRef, useState } from "react";
-<<<<<<< HEAD
 import { apartmentImg, footerVideo, playIcon } from "../assets/assets";
-=======
-import { apartmentImg, playIcon } from "../assets/assets";
->>>>>>> feature-one
 
 const Footer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -33,11 +29,7 @@ const Footer = () => {
           {isPlaying && (
             <video
               ref={videoRef}
-<<<<<<< HEAD
               src={footerVideo} 
-=======
-              src="/your-video.mp4" // 👈 replace with your video path
->>>>>>> feature-one
               className="absolute inset-0 w-full h-full object-cover z-20"
               controls
               onPause={() => setIsPlaying(false)}
